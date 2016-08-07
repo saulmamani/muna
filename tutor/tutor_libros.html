@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Mu&ntilde;a: Tutor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+        <style type="text/css">
+			h3, h4{
+				color:#900;
+			}
+		</style>
+    </head>
+    <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+       <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-grain"></span> Mu&ntilde;a Tutor</a>
+       <p class="navbar-text navbar-right text-right"><a href="#" onClick="javascript:imprimir()"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;&nbsp;</a></p>
+    </nav>
+
+        <div id='ataque' style="padding: 25px; padding-top:40px; background-color:#FFF5F0">
+          <h3><center>Ataques</center></h3>
+          <h4>Referencia indirecta a funcionalidad privada. (Acceso director desde la URL)</h4>
+          <h5><strong>Ejemplos:</strong></h5>
+          <p>Podemos saltarnos la autenticación si conocieramos o adivinaramos la dirección url de las páginas privadas del sistema (funcionalidad a la que solo deveríamos tener acceso una ves autenticado). </p>
+          <hr/>
+          <p>Si escribimos lo siguiente, en la dirección url, podríamos entrar directamente a la aplicación sin antes pasar por la autenticación. </p>
+          <p>http://.../muna/libros.php</p>
+          <p>http://.../muna/aportar.php</p>
+          <p>http://.../muna/perfil.php?id=2</p>
+          <hr/>
+          <h4>Acceso indirecto a recursos privados (hotlinking)</h4>
+          <p>En algunas ocasiones queremos que cierto contenido que tenemos colgado   en un directorio de nuestra aplicación web no sea visible a todos los   usuarios. <strong>Nos interesa que se pueda acceder a ese contenido pero   con un usuario y contraseña, para que solamente las personas que   conozcan esos datos puedan conseguirlo</strong>.</p>
+          <hr/>
+          <p>Por ejemplo, podemos a ver un listado de todos los libros. esto no se deberia de ver pueso que es privado solo para usuarios autenticados.</p>
+          <p>http://.../muna/documentos/</p>
+          <hr/>
+          <p>Igualmente podemos acceder al contenido de las otras carpetas de nuesta aplicación.</p>
+          <p>http://.../muna/portadas/</p>
+          <p>http://.../muna/images/</p>
+          <p>http://.../muna/css/</p>
+          <hr/>
+          <h4></h4>
+    <h4>Ataques por el código fuente.</h4>
+    <p>Algunos atacantes podrían analizar nuestro código fuente html o java script, buscar funciones del tipo GET, controles ocultos, urls de servicios web que se estan consumiento, etc.</p>
+    <pre id="line1"> &lt;script type="text/javascript"&gt;  <span id="line55">
+</span>	$(document).ready(function(){
+		$("#btnAceptar").click(function(){
+			var cuenta = $("#txtCuenta").val();
+			var clave = $("#txtClave").val();
+			$("#res").html('&lt;img src="images/ajax.gif" alt=""/&gt;');
+			$.get('autenticar.php', {txtCuenta:cuenta, txtClave:clave}, function(datos){
+				 $("#res").html(datos);
+			});
+		});
+	 });
+&lt;/script&gt; </pre>
+    <p>&nbsp;</p>
+    <p>Atacantes más preparados podrían incluso acceder a nuestro archivo de configuracion /muna/conexion.inc si no está protegido. Pueden averigurar las credenciales de acceso a la base de datos (usuario y password).</p></div>
+    <div id='defensa' style="padding: 20px; background-color:#EAFFEA">
+      <h3><center>Defensa</center></h3>
+          <h4>Ataques de Inyeccion Sql y XSS</h4>
+          <p>Si hemos sido victimas de un ataque de inyección SQL o XSS, debemos<em><strong> escapar las salidas, </strong></em>para que el código inyectado no se ejecute.</p>
+          <p>En &quot;libros.php&quot; busque el código php donde se imprime alguna información en pantalla, y reemplazelo utilizando la funcion htmlentities.</p>
+          <pre>
+...
+echo htmlentities(utf8_encode($f['Titulo']));
+...</pre>
+          <h4>Referencia indirecta a funcionalidad privada. (Acceso director desde la URL)</h4>
+          <p>Podemos usar <em><strong>variales de session</strong></em> para evitar este tipo de ataques.</p>
+          <p>Cargamos la session cuando el usuario se haya autenticado correctamente, &quot;autenticar.php&quot;.</p>
+          <pre>
+<p>if($res)
+{<br>	$_SESSION['Cuenta'] = $cuenta;
+	$_SESSION['IdUsuario'] = $res;
+	...
+}
+else
+{... </p>
+</pre>
+          <p>En las páginas que tengan funcionalidad privada para usuarios autenticados, controlamos la existencia de la session; si la session no existe, evita el ingreso y retorna a la página de autenticacion.</p>
+          <pre>    session_start(); <br>    if((!isset($_SESSION['IdUsuario'])))<br>        header(&quot;Location:index.php&quot;);</pre>
+          <p>Cuando salinos del sistema, matamos todas las variables de session.</p>
+          <pre>    session_start();<br>    session_destroy();</pre>
+          <h4>Acceso indirecto a recursos privados (hotlinking)</h4>
+          <p>Si queremos que no aparezca el listado de archivos, de una carpeta, tenemos que usar la directiva <strong>-Indexes</strong> en Apache para la carpeta que se quiera protejer, por ejemplo con un   archivo <strong>.htaccess</strong>. Otro truco sencillo es incluir un index.html en   blanco.<br>
+            <br>
+De hecho por seguridad es mejor usar la opción -Indexes a nivel global, a   menos que explicitamente se quiera mostrar el contenido de alguna carpeta   en particular.</p>
+          <p>Para utilizar <strong>.htaccess</strong> copie en archivo, ubicado en la careta .../muna/js/ , a la raiz de la aplicación.</p>
+          <p>&nbsp;</p>
+          <p>Hay ocaciones que no queremos que algún recurso o funcionalidad del sistema sea indexada por los buscadores como google o yahoo, como un servicio web por ejemplo. Para ocultar esta funcionalidad de los buscadores, se utilizan <strong>Robots.txt.</strong> (<a href="https://es.wikipedia.org/wiki/Estándar_de_exclusión_de_robots">más información</a>)</p>
+          <p>&nbsp;</p>
+          <h4>Ataques por el código fuente</h4>
+          <p>Una buena opción para proteger nuestro código fuente es encriptarlo, cifrarlo u ofusgarlo.</p>
+          <p>JavaScript</p>
+          <p>http://www.danstools.com/javascript-obfuscate/index.php<br>
+            http://www.daftlogic.com/projects-online-javascript-obfuscator.htm</p>
+          <p>PHP</p>
+          <p>http://es.phpencode.org/<br>
+            http://elhappy.net/happy_proyectos/ofuscador/<br>
+            http://php.net/manual/es/function.blenc-encrypt.php</p>
+          <p>HTML</p>
+          <p>http://encriptarcodigos.blogspot.com/<br>
+            http://www.programasprogramacion.com/encriptar.php<br>
+          </p>
+          <p>.NET</p>
+          <p>Eazfuscator.NET<br>
+            cripto</p>
+          <p>Se recomienda no abusar de la encriptación, puesto que repercute en la eficiencia del sistema (el sistema se vuelve mas lento). Sería una excelente idea encriptar los archivos de configuración.</p>
+          <hr/>
+      <p>En la lista de libros, tenemos dos enlaces para aportar un libro:</p>
+          <p>(+) Aportar: abre el formulario para registrar un nuevo libro, si hace click derecho puede ver el codigo fuente html y java script del formulario.</p>
+          <p>(+) Encrypt: es el mismo formulario pero con el código cifrado, si hace click derecho en el formulario solo podrá ver código basura.</p>
+      </div>
+    </body>
+    <script type="text/javascript">
+	function imprimir() 
+	{
+			if (window.print)
+				window.print()
+			else
+				alert("Para imprimir presione Crtl+P.");
+	}
+	</script>
+</html>

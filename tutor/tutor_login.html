@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Mu&ntilde;a: Tutor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+        <style type="text/css">
+			h3, h4{
+				color:#900;
+			}
+		</style>
+    </head>
+    <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+       <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-grain"></span> Mu&ntilde;a Tutor</a>
+       <p class="navbar-text navbar-right text-right"><a href="#" onClick="javascript:imprimir()"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;&nbsp;</a></p>
+    </nav>
+
+        <div id='ataque' style="padding: 25px; padding-top:40px; background-color:#FFF5F0">
+          <h3><center>Ataques</center></h3>
+          <h4>Ataques de Inyeccion Sql</h4>
+          <h5><strong>Ejemplos:</strong></h5>
+          <p>Tenemos la siguiente consulta para autenticar usuarios al sistema, ambas condiciones deben ser verdaderas para que el resultado de la consulta sea verdadera.</p>
+          <p>	$sql = &quot;select * from usuario where Cuenta = '$cuenta' and Clave = '$clave'&quot;;</p>
+          <p>Podemos forzar una condición verdadera en la consulta sql.          </p>
+          <hr/>
+          <p>Cuenta = ' OR '1'='1</p>
+          <p>Password = ' OR '1'='1          </p>
+          <hr/>
+          <p>Cuenta = ' OR ''='</p>
+          <p>Password = ' OR ''='          </p>
+          <hr/>
+          <p>Cuenta = ' or true -- </p>
+          <p>Password =  </p>
+          <hr/>
+          <p>Cuenta = cualquier cosa</p>
+          <p>Password = ' OR 'h'='h</p>
+          <hr/>
+          <p>Cuenta = ' OR '1'='1' -- </p>
+          <p>Password = cualquier cosa</p>
+          <hr/>
+          <p>Todas las anteriores inyecciones nos devuelve el último registro de la tabla en cuestión, pero podemos manipular esto con poco mas de esfuerzo</p>
+          <p>Cuenta = ' or '1'='1' order by 1 desc  -- </p>
+          <p>Password = cualquier cosa</p>
+          <hr/>
+          <p>Podríamos imaginar las columnas que tiene la tabla, y dirigir el ataque a un usuario en particular</p>
+          <p>Cuenta = ' OR Nombre like '%saul%' -- </p>
+          <p>Password = cualquier cosa</p>
+    <h4>&nbsp;</h4></div>
+        <div id='defensa' style="padding: 20px; background-color:#EAFFEA">
+          <h3><center>Defensa</center></h3>
+          <h4>Ataques de Inyeccion Sql</h4>
+          <p>Para evitar ataques del tipo inyección SQL debemos validar y filtrar los datos de entrada. En la clase Seguridad.class.php encontramos el método &quot;protected function sanatizar($dato)&quot;, éste método nos sirve para filtrar los datos de entrada a la aplicación.</p>
+          <p>En la clase &quot;Usuario.class.php&quot; en el método &quot;public function Autenticar($cuenta, $clave)&quot; descomente el codigo asociado a la Seguridad de inyección sql.</p>
+          <p> $cuenta = $this-&gt;sanatizar($cuenta);<br>
+$clave = $this-&gt;sanatizar($clave);</p>
+          <p>Una opción aún mejor es utilizar <em><strong>consultas parametrizadas</strong></em>, en la clase &quot;Seguridad.class.php&quot; se tienen los métodos para usar este tipo de consultas. Recuerde que es mejor tener seguridad redundante que no tener ningún tipo de seguridad.</p>
+          <h4>Seguridad de la Base de Datos</h4>
+          <p>Existen algunos datos delicados que no deberían ser accesibles ni por el administrador de la base de datos, como las contraseñas y los numeros de pin de las tarjetas de débíto bancarias. Por lo tanto, estos datos sensibles deberían ser encriptados con algun tipo de algoritmo, como por ejemplo MD5, SHA1, SHA2, etc que  vienen por defencto en los gestores de base de datos, en contra parte puede usar algun algoritimo propio. </p>
+          <hr/>
+            <p>En el archivo Usuario.class.php, busque 	el método Autenticar(,) y use la siguiente consulta sql:</p>
+            <p>$sql = &quot;select * from usuario where Cuenta = '$cuenta' and Clave = sha1('$clave')&quot;;</p>
+            <p>Para que este tipo de autenticación funcione debe de registrar usuarios con las Contraseñas encriptadas, para elllo en la clase Usuario.class.php en el método Insertar(....) user la siguente consulta sql:</p>
+            <p>$sql = &quot;Insert into usuario values (null, '$cuenta', SHA1('$clave'), '$nombre', '$apellido','$fecha')&quot;; </p>
+            <p>Con esto nos aseguramos que las contraseñas de los usuarios esten seguros encriptados con SHA1</p>
+          <hr/>
+          <p>&nbsp;</p>
+        </div>
+    </body>
+    <script type="text/javascript">
+	function imprimir() 
+	{
+			if (window.print)
+				window.print()
+			else
+				alert("Para imprimir presione Crtl+P.");
+	}
+	</script>
+</html>
