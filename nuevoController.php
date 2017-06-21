@@ -1,11 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
     $cuenta = (!isset($_POST['txtCuenta']))?'':$_POST['txtCuenta'];
     $clave = (!isset($_POST['txtClave']))?'':$_POST['txtClave'];
     $nombre = (!isset($_POST['txtNombre']))?'':$_POST['txtNombre'];
