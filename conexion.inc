@@ -5,9 +5,9 @@
 	function conectar()
 	{
 		$servidor = "localhost";
-		$cuenta = "id1404838_das";
-		$password = "malditaweb123";
-		$database = "id1404838_malditawebd";
+		$cuenta = "root";
+		$password = "";
+		$database = "malditawebd";
 
 		$conexion = new mysqli($servidor, $cuenta, $password);
 		$conexion->select_db($database);
