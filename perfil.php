@@ -47,7 +47,7 @@ $result = $obj->VerPerfil($id);
                      || <a href="javascript:abrirVentanaTutor('tutor/tutor_perfil.html#defensa')" data-toggle="tooltip" title="Defensas" id="btnAyuda">Defensa <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
                   </p>
                 <p>Identificador: <?php echo utf8_encode($id); ?></p>
-                <?php while ($f = mysql_fetch_array($result)): ?>
+                <?php while ($f = mysqli_fetch_array($result)): ?>
                     <p><strong>Cuenta: <?php echo utf8_encode($f['Cuenta']); ?></strong></p>
                     <p>Clave: <?php echo utf8_encode($f['Clave']); ?></p>
                     

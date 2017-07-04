@@ -28,15 +28,16 @@ require_once('Seguridad.class.php');
 		
 		//Seguridad: Acceso a la apliación con contraseña encriptada
         //$sql = "select * from usuario where Cuenta = '$cuenta' and Clave = sha1('$clave')";
-		
+        
         $result = $this->MyQuery($sql);
-        if(mysql_num_rows($result) > 0)
+
+        if(mysqli_num_rows($result) > 0)
         {
-            while($f = mysql_fetch_array($result))
+            while($f = mysqli_fetch_array($result))
             {
                 $idUsuario = $f['Id'];
             }
-			mysql_free_result($result);
+            mysqli_free_result($result);
             return $idUsuario;
         }
         else

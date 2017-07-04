@@ -6,7 +6,7 @@
     
     include('Usuario.class.php');
     $obj = new Usuario();
-    $res = $obj->Autenticar("$cuenta", "$clave");
+    $res = $obj->Autenticar($cuenta, $clave);
 
     if($res)
     {

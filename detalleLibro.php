@@ -41,7 +41,7 @@ $result = $obj->BuscarPorId($idLibro);
                      || <a href="javascript:abrirVentanaTutor('tutor/tutor_detallelibro.html#defensa')" data-toggle="tooltip" title="Defensas" id="btnAyuda">Defensa <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
                 </p>
                 
-                <?php while ($f = mysql_fetch_array($result)): ?>
+                <?php while ($f = mysqli_fetch_array($result)): ?>
                  <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-2">
