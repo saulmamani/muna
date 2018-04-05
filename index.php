@@ -32,7 +32,7 @@
                      || <a href="javascript:abrirVentanaTutor('tutor/tutor_login.html#defensa')" data-toggle="tooltip" title="Defensas" id="btnAyuda">Defensa <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
                   </p>
                    <h2><span class="glyphicon glyphicon-grain"></span> MU&Ntilde;A<span class="glyphicon glyphicon-grain"></span></h2> 
-                   <h5> v0.9 beta</h6> 
+                   <h5> v0.9.1 beta</h6> 
                     <form class="form-signin" data-example-id="input-group-multiple-buttons">
 
                     <label for="txtCuenta" class="sr-only">Usuario</label>
@@ -55,7 +55,7 @@
                     </div>
                     
                     <div class="acercaDe">
-                    <p align='center' style="color: #ccc"><a href="http://www.somosdas.com" target="_blank" >&copy; Ing. Saul Mamani</a><br/>
+                    <p align='center' style="color: #ccc"><a href="http://saulmamani.github.io" target="_blank" >&copy; Ing. Saul Mamani</a><br/>
                     <a href="https://twitter.com/kanito777" target="_blank" >@kanito777</a><br/>
                      <a href="tel:76137269">+591 76137269</a><br/>
                      <a href="mailto:luas0_1@yahoo.es">luas0_1@yahoo.es</a></p>

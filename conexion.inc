@@ -1,12 +1,11 @@
 <?php
- 
 	error_reporting(E_ALL ^E_NOTICE ^E_WARNING ^E_DEPRECATED);
-
+	
 	function conectar()
 	{
-		$servidor = "localhost";
+		$servidor = "127.0.0.1";
 		$cuenta = "root";
-		$password = "";
+		$password = "root";
 		$database = "malditawebd";
 
 		$conexion = new mysqli($servidor, $cuenta, $password);

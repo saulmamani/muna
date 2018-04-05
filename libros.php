@@ -3,7 +3,6 @@
     session_start(); 
     if((!isset($_SESSION['IdUsuario'])))
         header("Location:index.php");
-    
     include('Libro.class.php');
     $obj = new Libro();
     $result = $obj->Listar();
@@ -59,9 +58,10 @@
                 <?php while($f = mysqli_fetch_array($result)): ?>
                 <tr>
                     <td><?php echo utf8_encode($f['IdLibro']); ?></td>
-                    <td><?php echo htmlentities(utf8_encode($f['Titulo'])); ?></td>
-                    <td><?php echo htmlentities(utf8_encode($f['Autor'])); ?></td>
-                    <!--Seguridad: Escapando las salidas para evitar SQL inyecciones XSS-->
+                    <td><?php echo utf8_encode($f['Titulo']); ?></td>
+                    <td><?php echo utf8_encode($f['Autor']); ?></td>
+                    <!--Seguridad: Escapando las salidas para evitar SQL inyecciones XSS
+                        utilize htmlentities(campo)-->
                     <td><?php echo utf8_encode($f['Descripcion']); ?></td>
                     <td><a href="detalleLibro.php?idLibro=<?php echo $f['IdLibro']; ?>">descargar</a></td>
                 </tr>

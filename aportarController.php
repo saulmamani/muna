@@ -36,7 +36,7 @@
     if ($obj->Insertar($titulo,$autor, $desc, "portadas/".$nombrePortada, $nombreArchivo, $fkUsuario)) 
     {
         echo '<script type="text/javascript">alert("Registrado Correctamente!!!")</script>';
-        echo "<script type='text/javascript'>window.location.href = 'libros.php';</script>";
+        echo "<script type='text/javascript'>window.location.href = 'aportar.php';</script>";
     } 
     else 
     {

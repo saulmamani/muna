@@ -34,7 +34,23 @@ abstract class Seguridad {
 		//$res = mysqli_query($query, $this->conexion);
 		$res = $this->conexion->query($query);
         cerrar_conexion($this->conexion);
-		mysqli_free_result($result);
         return $res;
     }
+/*
+    protected function MyQueryParametrizado($query)
+    {
+        $stmt = $this->conexion->prepare($sql);
+        // si la consulta $sql tiene parametros, debe colocarlos aqui, con su tipo de dato
+        // ->bind_param('iss', $id, $par1. $par2);
+        $stmt->bind_param('s', $par);
+
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $stmt->close();
+        cerrar_conexion($this->conexion);
+
+        return $res;
+
+    }
+    */
 }

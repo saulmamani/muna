@@ -1,10 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 require_once('Seguridad.class.php');
 
  class Usuario extends Seguridad
@@ -25,7 +20,6 @@ require_once('Seguridad.class.php');
         //$clave = $this->sanatizar($clave);
         
         $sql = "select * from usuario where Cuenta = '$cuenta' and Clave = '$clave'";
-		
 		//Seguridad: Acceso a la apliación con contraseña encriptada
         //$sql = "select * from usuario where Cuenta = '$cuenta' and Clave = sha1('$clave')";
         

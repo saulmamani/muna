@@ -28,7 +28,9 @@ and open the template in the editor.
           <h4>Ataques de Inyeccion Sql</h4>
           <h5><strong>Ejemplos:</strong></h5>
           <p>Tenemos la siguiente consulta para autenticar usuarios al sistema, ambas condiciones deben ser verdaderas para que el resultado de la consulta sea verdadera.</p>
+          <code>
           <p>	$sql = &quot;select * from usuario where Cuenta = '$cuenta' and Clave = '$clave'&quot;;</p>
+          </code>
           <p>Podemos forzar una condición verdadera en la consulta sql.          </p>
           <hr/>
           <p>Cuenta = ' OR '1'='1</p>
@@ -53,22 +55,43 @@ and open the template in the editor.
           <p>Podríamos imaginar las columnas que tiene la tabla, y dirigir el ataque a un usuario en particular</p>
           <p>Cuenta = ' OR Nombre like '%saul%' -- </p>
           <p>Password = cualquier cosa</p>
+          <hr/>
+          <p>Si conocemos la cuenta del usuario, podemos entrar al sistema sin conocer su passsword</p>
+          <p>Cuenta = 76137269' OR -- </p>
+          <p>Password = cualquier cosa</p>
+
     <h4>&nbsp;</h4></div>
         <div id='defensa' style="padding: 20px; background-color:#EAFFEA">
           <h3><center>Defensa</center></h3>
           <h4>Ataques de Inyeccion Sql</h4>
           <p>Para evitar ataques del tipo inyección SQL debemos validar y filtrar los datos de entrada. En la clase Seguridad.class.php encontramos el método &quot;protected function sanatizar($dato)&quot;, éste método nos sirve para filtrar los datos de entrada a la aplicación.</p>
           <p>En la clase &quot;Usuario.class.php&quot; en el método &quot;public function Autenticar($cuenta, $clave)&quot; descomente el codigo asociado a la Seguridad de inyección sql.</p>
+          <code>
           <p> $cuenta = $this-&gt;sanatizar($cuenta);<br>
-$clave = $this-&gt;sanatizar($clave);</p>
+          $clave = $this-&gt;sanatizar($clave);</p>
+          </code>
           <p>Una opción aún mejor es utilizar <em><strong>consultas parametrizadas</strong></em>, en la clase &quot;Seguridad.class.php&quot; se tienen los métodos para usar este tipo de consultas. Recuerde que es mejor tener seguridad redundante que no tener ningún tipo de seguridad.</p>
+
+          <code>
+          protected function MyQueryParametrizado($query)
+          { 
+            <br>
+          $stmt = $this->conexion->prepare($sql);
+          ... <br>
+          }
+          </code>
+
           <h4>Seguridad de la Base de Datos</h4>
           <p>Existen algunos datos delicados que no deberían ser accesibles ni por el administrador de la base de datos, como las contraseñas y los numeros de pin de las tarjetas de débíto bancarias. Por lo tanto, estos datos sensibles deberían ser encriptados con algun tipo de algoritmo, como por ejemplo MD5, SHA1, SHA2, etc que  vienen por defencto en los gestores de base de datos, en contra parte puede usar algun algoritimo propio. </p>
           <hr/>
             <p>En el archivo Usuario.class.php, busque 	el método Autenticar(,) y use la siguiente consulta sql:</p>
+            <code>
             <p>$sql = &quot;select * from usuario where Cuenta = '$cuenta' and Clave = sha1('$clave')&quot;;</p>
+            </code>
             <p>Para que este tipo de autenticación funcione debe de registrar usuarios con las Contraseñas encriptadas, para elllo en la clase Usuario.class.php en el método Insertar(....) user la siguente consulta sql:</p>
+            <code>
             <p>$sql = &quot;Insert into usuario values (null, '$cuenta', SHA1('$clave'), '$nombre', '$apellido','$fecha')&quot;; </p>
+            </code>
             <p>Con esto nos aseguramos que las contraseñas de los usuarios esten seguros encriptados con SHA1</p>
           <hr/>
           <p>&nbsp;</p>
