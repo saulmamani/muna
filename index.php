@@ -32,7 +32,7 @@
                      || <a href="javascript:abrirVentanaTutor('tutor/tutor_login.html#defensa')" data-toggle="tooltip" title="Defensas" id="btnAyuda">Defensa <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
                   </p>
                    <h2><span class="glyphicon glyphicon-grain"></span> MU&Ntilde;A<span class="glyphicon glyphicon-grain"></span></h2> 
-                   <h5> v0.9.1 beta</h6> 
+                   <h5> v0.9.1 beta</h5>
                     <form class="form-signin" data-example-id="input-group-multiple-buttons">
 
                     <label for="txtCuenta" class="sr-only">Usuario</label>

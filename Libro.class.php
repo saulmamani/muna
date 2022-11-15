@@ -7,11 +7,11 @@
  */
 require_once('Seguridad.class.php');
 
- class Libro extends Seguridad
- {
+class Libro extends Seguridad
+{
     var $conexion;
-	
-    public function Libro()
+
+    public function __construct()
     {
         //realizando la conexion
         include("conexion.inc");
@@ -20,44 +20,39 @@ require_once('Seguridad.class.php');
 
     public function BuscarPorId($id)
     {
-		//Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
+        //Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
         //$bool = ( !is_int($id) ? (ctype_digit($id)) : true );
-		//if(!$bool) 
-			//$id = 0;
-		
+        //if(!$bool)
+        //$id = 0;
+
         $sql = "Select * from libro where IdLibro = '$id'";
         return $this->MyQuery($sql);
     }
-    
+
     public function Listar()
     {
         $sql = "Select * from libro Order By IdLibro Desc";
-        return  $this->MyQuery($sql);
+        return $this->MyQuery($sql);
     }
-    
+
     public function Insertar($titulo, $autor, $descripcion, $portada, $url, $fkUsuario)
     {
-		//Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
-		//$titulo = $this->sanatizar($titulo);
-		//$autor = $this->sanatizar($autor);
-		//$descripcion = $this->sanatizar($descripcion);
-		
-		$descripcion = utf8_encode($descripcion);
+        //Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
+        //$titulo = $this->sanatizar($titulo);
+        //$autor = $this->sanatizar($autor);
+        //$descripcion = $this->sanatizar($descripcion);
+
+        $descripcion = utf8_encode($descripcion);
         $sql = "Insert into libro values (null, '$titulo', '$autor', '$descripcion', '$portada','$url', '$fkUsuario')";
         return $this->MyQuery($sql);
     }
-    
+
     public function Eliminar($id)
     {
-		//Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
+        //Seguridad: Filtrado de datos papra evitar ataques del tipo inyección sql, xss, etc.
         //$id = $this->sanatizar($id);
-        
+
         $sql = "Delete from libro IdLibro = '$id'";
         return $this->MyQuery($sql);
     }
- }
- 
-// $obj = new Logica();
-// $datos = $obj->Autenticar("' or '1'='1' -- ", 'admin1230000');
-// echo $datos;
-
+}
